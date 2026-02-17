@@ -1,0 +1,12 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::364582896484:role/finomics_data_pipeline_role"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
