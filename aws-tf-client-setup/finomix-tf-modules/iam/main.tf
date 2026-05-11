@@ -1,0 +1,442 @@
+# ==============================
+# IAM Role for Finomics
+# ==============================
+resource "aws_iam_role" "finomics_role" {
+  name = var.role_name
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = var.trusted_account_arn
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+# ==============================
+# Inline IAM Policy for Finomics Role
+# ==============================
+resource "aws_iam_role_policy" "finomics_policy" {
+  name = var.extra_policy_name
+  role = aws_iam_role.finomics_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+
+      # Cost Explorer, Organization, and Cost Optimization Hub APIs
+      {
+        Sid    = "CostExplorerAndOrgAPIs"
+        Effect = "Allow"
+        Action = [
+          "ce:GetCostAndUsage",
+          "ce:GetCostForecast",
+          "ce:GetDimensionValues",
+          "ce:GetTags",
+          "ce:ListCostAllocationTags",
+          "ce:GetRightsizingRecommendation",
+          "ce:GetSavingsPlansUtilizationDetails",
+          "ce:GetReservationUtilization",
+          "cost-optimization-hub:ListRecommendations",
+          "cost-optimization-hub:ListRecommendationSummaries",
+          "cost-optimization-hub:GetPreferences",
+          "cost-optimization-hub:GetRecommendation",
+          "organizations:DescribeOrganization",
+          "organizations:DescribeAccount",
+          "organizations:ListAccounts",
+          "organizations:ListParents",
+          "organizations:ListAccountsForParent",
+          "organizations:ListRoots"
+        ]
+        Resource = "*"
+      },
+
+      # EC2 Access
+      {
+        Sid    = "EC2Access"
+        Effect = "Allow"
+        Action = [
+          "ec2:DescribeInstances",
+          "ec2:DescribeRegions",
+          "ec2:DescribeVolumes"
+        ]
+        Resource = [
+          "arn:aws:ec2:${var.aws_region}:${var.account_id}:instance/*",
+          "arn:aws:ec2:${var.aws_region}:${var.account_id}:volume/*"
+        ]
+      },
+
+      # RDS Access
+      {
+        Sid    = "RDSAccess"
+        Effect = "Allow"
+        Action = [
+          "rds:DescribeDBInstances"
+        ]
+        Resource = [
+          "arn:aws:rds:${var.aws_region}:${var.account_id}:db:*"
+        ]
+      },
+
+      # Auto Scaling Access
+      {
+        Sid    = "AutoScalingAccess"
+        Effect = "Allow"
+        Action = [
+          "autoscaling:DescribeAutoScalingGroups",
+          "autoscaling:DescribePolicies"
+        ]
+        Resource = [
+          "arn:aws:autoscaling:${var.aws_region}:${var.account_id}:autoScalingGroup:*:autoScalingGroupName/*"
+        ]
+      },
+
+      # CloudWatch Access
+      {
+        Sid    = "CloudWatchAccess"
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:GetMetricStatistics"
+        ]
+        Resource = [
+          "arn:aws:cloudwatch:${var.aws_region}:${var.account_id}:metric/*"
+        ]
+      },
+
+      # SSM Parameter Store Access
+      {
+        Sid    = "SSMParameterAccess"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters"
+        ]
+        Resource = [
+          "arn:aws:ssm:${var.aws_region}:${var.account_id}:parameter/*"
+        ]
+      },
+
+      # Compute Optimizer Access
+      {
+        Sid    = "ComputeOptimizerAccess"
+        Effect = "Allow"
+        Action = [
+          "compute-optimizer:GetEnrollmentStatus",
+          "compute-optimizer:GetEC2InstanceRecommendations",
+          "compute-optimizer:GetECSServiceRecommendations",
+          "compute-optimizer:GetEBSVolumeRecommendations"
+        ]
+        Resource = [
+          "arn:aws:compute-optimizer:${var.aws_region}:${var.account_id}:recommendation/*"
+        ]
+      },
+
+      # Trusted Advisor Access
+      {
+        Sid    = "TrustedAdvisorAccess"
+        Effect = "Allow"
+        Action = [
+          "trustedadvisor:GetCheckResult",
+          "trustedadvisor:DescribeCheckItems"
+        ]
+        Resource = [
+          "arn:aws:trustedadvisor:${var.aws_region}:${var.account_id}:check/*"
+        ]
+      },
+
+      # Finomics Bronze Read-Only Permissions
+      {
+        Sid    = "FinomicsBronzeReadOnly"
+        Effect = "Allow"
+        Action = [
+          "sts:GetCallerIdentity",
+
+          "tag:GetResources",
+          "tag:GetTagKeys",
+          "tag:GetTagValues",
+
+          "bedrock:GetFoundationModel",
+          "bedrock:ListFoundationModels",
+          "bedrock:ListCustomModels",
+          "bedrock:GetCustomModel",
+          "bedrock:GetProvisionedModelThroughput",
+          "bedrock:ListProvisionedModelThroughputs",
+          "bedrock:ListTagsForResource",
+          "bedrock:GetModelInvocationLoggingConfiguration",
+
+          "cloudwatch:GetMetricData",
+          "cloudwatch:GetMetricStatistics",
+          "cloudwatch:ListMetrics",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:ListDashboards",
+
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:DescribeMetricFilters",
+
+          "ec2:DescribeInstances",
+          "ec2:DescribeTags",
+          "ec2:DescribeVolumes",
+          "ec2:DescribeSnapshots",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeInternetGateways",
+          "ec2:DescribeNatGateways",
+          "ec2:DescribeAddresses",
+          "ec2:DescribeKeyPairs",
+          "ec2:DescribeAvailabilityZones",
+          "ec2:DescribeRegions",
+          "ec2:DescribePlacementGroups",
+          "ec2:DescribeVpcPeeringConnections",
+          "ec2:DescribeVpcEndpoints",
+          "ec2:DescribeReservedInstances",
+          "ec2:DescribeImages",
+          "ec2:DescribeInstanceTypes",
+
+          "acm:ListCertificates",
+          "acm:DescribeCertificate",
+
+          "apigateway:GET",
+
+          "cloudformation:ListStacks",
+          "cloudformation:DescribeStacks",
+          "cloudformation:ListStackResources",
+          "cloudformation:DescribeStackResources",
+          "cloudformation:DescribeStackEvents",
+          "cloudformation:GetTemplate",
+
+          "cloudfront:ListDistributions",
+          "cloudfront:GetDistribution",
+          "cloudfront:ListFunctions",
+          "cloudfront:ListCachePolicies",
+          "cloudfront:ListOriginRequestPolicies",
+          "cloudfront:ListTagsForResource",
+
+          "cloudtrail:ListTrails",
+          "cloudtrail:GetTrail",
+          "cloudtrail:DescribeTrails",
+          "cloudtrail:GetTrailStatus",
+          "cloudtrail:GetEventSelectors",
+          "cloudtrail:ListTags",
+
+          "config:DescribeConfigurationRecorders",
+          "config:DescribeDeliveryChannels",
+          "config:DescribeConfigRules",
+          "config:GetComplianceDetailsByConfigRule",
+          "config:DescribeConfigurationRecorderStatus",
+          "config:DescribeDeliveryChannelStatus",
+
+          "deepracer:ListModels",
+          "deepracer:GetModel",
+          "deepracer:ListLeaderboards",
+          "deepracer:ListRaceTracks",
+          "deepracer:ListCars",
+          "deepracer:GetCar",
+
+          "directconnect:DescribeConnections",
+          "directconnect:DescribeVirtualInterfaces",
+          "directconnect:DescribeDirectConnectGateways",
+          "directconnect:DescribeLags",
+          "directconnect:DescribeLocations",
+
+          "dynamodb:ListTables",
+          "dynamodb:DescribeTable",
+          "dynamodb:ListGlobalTables",
+          "dynamodb:DescribeGlobalTable",
+          "dynamodb:DescribeTimeToLive",
+          "dynamodb:ListBackups",
+          "dynamodb:ListTagsOfResource",
+
+          "ecr:DescribeRepositories",
+          "ecr:DescribeImages",
+          "ecr:GetRepositoryPolicy",
+          "ecr:ListImages",
+          "ecr:ListTagsForResource",
+
+          "ecs:ListClusters",
+          "ecs:DescribeClusters",
+          "ecs:ListServices",
+          "ecs:DescribeServices",
+          "ecs:ListTasks",
+          "ecs:DescribeTasks",
+          "ecs:ListContainerInstances",
+          "ecs:DescribeContainerInstances",
+
+          "elasticfilesystem:DescribeFileSystems",
+          "elasticfilesystem:DescribeMountTargets",
+          "elasticfilesystem:DescribeAccessPoints",
+          "elasticfilesystem:DescribeLifecycleConfiguration",
+
+          "eks:ListClusters",
+          "eks:DescribeCluster",
+          "eks:ListNodegroups",
+          "eks:DescribeNodegroup",
+          "eks:ListAddons",
+          "eks:DescribeAddon",
+          "eks:ListFargateProfiles",
+
+          "elasticache:DescribeCacheClusters",
+          "elasticache:DescribeReplicationGroups",
+          "elasticache:DescribeCacheSubnetGroups",
+          "elasticache:DescribeCacheParameterGroups",
+          "elasticache:ListTagsForResource",
+
+          "elasticloadbalancing:DescribeLoadBalancers",
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:DescribeListeners",
+          "elasticloadbalancing:DescribeRules",
+          "elasticloadbalancing:DescribeTags",
+          "elasticloadbalancing:DescribeTargetHealth",
+
+          "es:ListDomainNames",
+          "es:DescribeElasticsearchDomains",
+          "opensearch:ListDomainNames",
+          "opensearch:DescribeDomains",
+          "opensearch:DescribeDomain",
+          "opensearch:ListTags",
+
+          "geo:ListPlaceIndexes",
+          "geo:ListMaps",
+          "geo:ListRouteCalculators",
+          "geo:ListTrackers",
+          "geo:ListGeofenceCollections",
+          "geo:DescribeMap",
+          "geo:DescribeTracker",
+          "geo:DescribePlaceIndex",
+          "geo:DescribeRouteCalculator",
+
+          "glacier:ListVaults",
+          "glacier:DescribeVault",
+          "glacier:ListJobs",
+          "glacier:GetVaultNotifications",
+
+          "glue:GetJobs",
+          "glue:GetJob",
+          "glue:GetDatabases",
+          "glue:GetTables",
+          "glue:GetCrawlers",
+          "glue:GetCrawler",
+          "glue:GetConnections",
+          "glue:GetDevEndpoints",
+          "glue:GetTriggers",
+
+          "guardduty:ListDetectors",
+          "guardduty:GetDetector",
+          "guardduty:ListFindings",
+          "guardduty:GetFindings",
+          "guardduty:ListMembers",
+          "guardduty:GetMasterAccount",
+
+          "kms:ListKeys",
+          "kms:DescribeKey",
+          "kms:ListAliases",
+          "kms:GetKeyPolicy",
+          "kms:ListKeyPolicies",
+          "kms:ListResourceTags",
+
+          "lambda:ListFunctions",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:ListEventSourceMappings",
+          "lambda:ListAliases",
+          "lambda:ListVersionsByFunction",
+          "lambda:ListTags",
+
+          "payment-cryptography:ListKeys",
+          "payment-cryptography:GetKey",
+          "payment-cryptography:ListTagsForResource",
+
+          "rds:DescribeDBInstances",
+          "rds:DescribeDBClusters",
+          "rds:DescribeDBSnapshots",
+          "rds:DescribeDBSubnetGroups",
+          "rds:DescribeDBParameterGroups",
+          "rds:ListTagsForResource",
+
+          "route53:ListHostedZones",
+          "route53:GetHostedZone",
+          "route53:ListResourceRecordSets",
+          "route53:ListHealthChecks",
+          "route53:GetHealthCheck",
+          "route53:ListQueryLoggingConfigs",
+
+          "route53domains:ListDomains",
+          "route53domains:GetDomainDetail",
+
+          "s3:ListBuckets",
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:GetBucketLocation",
+          "s3:GetBucketEncryption",
+          "s3:GetEncryptionConfiguration",
+          "s3:GetBucketVersioning",
+          "s3:GetBucketTagging",
+          "s3:GetBucketLogging",
+          "s3:GetBucketLifecycle",
+          "s3:GetBucketPublicAccessBlock",
+          "s3:GetBucketAcl",
+          "s3:GetBucketPolicy",
+          "s3:GetBucketPolicyStatus",
+          "s3:GetBucketNotification",
+          "s3:GetBucketReplication",
+
+          "secretsmanager:ListSecrets",
+          "secretsmanager:DescribeSecret",
+
+          "securityhub:GetFindings",
+          "securityhub:DescribeHub",
+          "securityhub:ListEnabledProductsForImport",
+          "securityhub:GetInsights",
+          "securityhub:DescribeStandards",
+
+          "sns:ListTopics",
+          "sns:GetTopicAttributes",
+          "sns:ListSubscriptionsByTopic",
+          "sns:ListSubscriptions",
+          "sns:ListTagsForResource",
+
+          "sqs:ListQueues",
+          "sqs:GetQueueAttributes",
+          "sqs:ListQueueTags",
+
+          "ssm:DescribeInstanceInformation",
+          "ssm:DescribeParameters",
+          "ssm:ListDocuments",
+          "ssm:GetInventory",
+          "ssm:DescribePatchBaselines",
+          "ssm:ListAssociations",
+
+          "states:ListStateMachines",
+          "states:DescribeStateMachine",
+          "states:ListExecutions",
+          "states:DescribeExecution",
+          "states:ListActivities",
+          "states:ListTagsForResource",
+
+          "support:DescribeCases",
+          "support:DescribeTrustedAdvisorChecks",
+          "support:DescribeTrustedAdvisorCheckResult",
+          "support:DescribeTrustedAdvisorCheckSummaries",
+          "support:DescribeSeverityLevels",
+
+          "waf:ListWebACLs",
+          "waf:GetWebACL",
+          "waf-regional:ListWebACLs",
+          "waf-regional:GetWebACL",
+          "wafv2:ListWebACLs",
+          "wafv2:GetWebACL",
+          "wafv2:ListRuleGroups",
+          "wafv2:GetRuleGroup",
+          "wafv2:ListTagsForResource"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
