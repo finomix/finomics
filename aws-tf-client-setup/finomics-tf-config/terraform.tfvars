@@ -20,11 +20,11 @@ role_name = "finomics-access-role-new1"
 
 # Trusted Accounts and Roles
 trusted_account_arn = [
-  "arn:aws:iam::464994449524:role/finomics_data_pipeline_role"
+  "arn:aws:iam::364582896484:role/finomics_data_pipeline_role"
 ]
 
 # Pipeline Role ARN for S3 Cross-Account Access
-pipeline_role_arn = "arn:aws:iam::464994449524:role/finomics_data_pipeline_role"
+pipeline_role_arn = "arn:aws:iam::364582896484:role/finomics_data_pipeline_role"
 
 # IAM Policy Names
 policy_name       = "finomics-access-policy-new1"
