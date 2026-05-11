@@ -32,14 +32,14 @@ This Terraform configuration provisions AWS resources for Finomics reporting and
 
 ```
 finomics-infra-tf-code/
-├── finomix-tf-config/              # Root configuration (entry point)
+├── finomics-tf-config/              # Root configuration (entry point)
 │   ├── backend.tf                  # Remote state backend (S3)
 │   ├── main.tf                     # Root module orchestration
 │   ├── outputs.tf                  # Root outputs
 │   ├── provider.tf                 # AWS provider config
 │   ├── terraform.tfvars            # Variable values
 │   └── variables.tf                # Top-level variables
-└── finomix-tf-modules/             # Reusable modules
+└── finomics-tf-modules/             # Reusable modules
     ├── iam/                        # IAM role + inline policy
     │   ├── main.tf
     │   ├── outputs.tf
@@ -54,7 +54,7 @@ finomics-infra-tf-code/
 
 ## Terraform Files
 
-### 1. `finomix-tf-config/backend.tf` – State Management
+### 1. `finomics-tf-config/backend.tf` – State Management
 
 ```hcl
 terraform {
@@ -72,7 +72,7 @@ Purpose:
 - Stores Terraform state in S3 to enable collaboration.
 - Uses server-side encryption and a deterministic state key.
 
-### 2. `finomix-tf-config/provider.tf` – AWS Provider
+### 2. `finomics-tf-config/provider.tf` – AWS Provider
 
 ```hcl
 provider "aws" {
@@ -80,7 +80,7 @@ provider "aws" {
 }
 ```
 
-### 3. `finomix-tf-config/main.tf` – Root Orchestration
+### 3. `finomics-tf-config/main.tf` – Root Orchestration
 
 - Calls modules: `s3`, `iam`.
 - Includes a `null_resource` with `local-exec` to enroll Compute Optimizer:
@@ -94,7 +94,7 @@ provider "aws" {
 
   Requires AWS CLI with permissions to call `compute-optimizer:UpdateEnrollmentStatus`.
 
-### 4. `finomix-tf-config/variables.tf` – Input Variables
+### 4. `finomics-tf-config/variables.tf` – Input Variables
 
 Key variables:
 
@@ -104,9 +104,9 @@ Key variables:
 - `role_name`, `trusted_account_arn`, `extra_policy_name` – IAM settings
 - `pipeline_role_arn` – cross-account principal used in S3 policy
 
-### 5. `finomix-tf-config/terraform.tfvars` – Variable Values
+### 5. `finomics-tf-config/terraform.tfvars` – Variable Values
 
-Update the variables in [terraform.tfvars](finomics-infra-tf-code/finomix-tf-config/terraform.tfvars) with values for your AWS environment. This file supplies concrete values for the variables declared in `variables.tf` and is loaded automatically by Terraform.
+Update the variables in [terraform.tfvars](finomics-infra-tf-code/finomics-tf-config/terraform.tfvars) with values for your AWS environment. This file supplies concrete values for the variables declared in `variables.tf` and is loaded automatically by Terraform.
 
 Values to update:
 
@@ -183,7 +183,7 @@ $env:AWS_PROFILE = "finomics"
 ### Initialize, Validate, Plan, Apply
 
 ```powershell
-Set-Location "c:\Users\Raj Jaiswal\Downloads\aws-terra\herbalife-terraform-code\AWS\finomics-infra-tf-code\finomix-tf-config"
+Set-Location "c:\Users\Raj Jaiswal\Downloads\aws-terra\herbalife-terraform-code\AWS\finomics-infra-tf-code\finomics-tf-config"
 
 terraform init
 terraform validate

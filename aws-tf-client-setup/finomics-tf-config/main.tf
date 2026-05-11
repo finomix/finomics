@@ -1,5 +1,5 @@
 module "s3" {
-  source            = "../finomix-tf-modules/s3"
+  source            = "../finomics-tf-modules/s3"
   bucket_name       = var.bucket_name
   environment       = var.environment
   pipeline_role_arn = var.pipeline_role_arn
@@ -8,7 +8,7 @@ module "s3" {
 }
 
 module "iam" {
-  source              = "../finomix-tf-modules/iam"
+  source              = "../finomics-tf-modules/iam"
   role_name           = var.role_name
   trusted_account_arn = var.trusted_account_arn
   extra_policy_name   = var.extra_policy_name
