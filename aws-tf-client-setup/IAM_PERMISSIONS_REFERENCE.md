@@ -1,128 +1,587 @@
-# AWS IAM Permissions Reference
+# IAM Policy — Permission Reference
 
-This document lists all IAM permissions used in the Finomics Terraform infrastructure.
+Read-only policy for viewing resource details, usage metrics, and cost optimization recommendations across 45 AWS services:
 
-## IAM Role Permissions (Finomics Access Role)
-
-| Permission | Description |
-|------------|-------------|
-| **Cost Explorer & Cost Optimization** | |
-| `ce:GetCostAndUsage` | Retrieve cost and usage metrics for the account |
-| `ce:GetCostForecast` | Get forecasted cost predictions |
-| `ce:GetDimensionValues` | Retrieve dimension values for filtering cost data |
-| `ce:GetTags` | Get tag keys and values for cost allocation |
-| `ce:ListCostAllocationTags` | List all cost allocation tags |
-| `ce:GetRightsizingRecommendation` | Get EC2 rightsizing recommendations |
-| `ce:GetSavingsPlansUtilizationDetails` | Retrieve Savings Plans utilization and coverage details |
-| `ce:GetReservationUtilization` | Get Reserved Instance utilization data |
-| `cost-optimization-hub:ListRecommendations` | List cost optimization recommendations |
-| `cost-optimization-hub:ListRecommendationSummaries` | Get summary of cost optimization recommendations |
-| `cost-optimization-hub:GetPreferences` | Retrieve cost optimization hub preferences |
-| `cost-optimization-hub:GetRecommendation` | Get detailed cost optimization recommendation |
-| **Organizations** | |
-| `organizations:DescribeOrganization` | Get details about the AWS Organization |
-| `organizations:ListAccounts` | List all accounts in the organization |
-| `organizations:ListParents` | List parent organizational units |
-| `organizations:ListAccountsForParent` | List accounts under a specific organizational unit |
-| **EC2** | |
-| `ec2:DescribeInstances` | List and describe EC2 instances |
-| `ec2:DescribeRegions` | List all AWS regions |
-| `ec2:DescribeVolumes` | Describe EBS volumes |
-| **RDS** | |
-| `rds:DescribeDBInstances` | List and describe RDS database instances |
-| **Auto Scaling** | |
-| `autoscaling:DescribeAutoScalingGroups` | Describe Auto Scaling groups |
-| `autoscaling:DescribePolicies` | Describe Auto Scaling policies |
-| **CloudWatch** | |
-| `cloudwatch:GetMetricStatistics` | Retrieve CloudWatch metric statistics |
-| **SSM Parameter Store** | |
-| `ssm:GetParameters` | Retrieve parameters from Systems Manager Parameter Store |
-| **Compute Optimizer** | |
-| `compute-optimizer:GetEnrollmentStatus` | Check if Compute Optimizer is enrolled |
-| `compute-optimizer:GetEC2InstanceRecommendations` | Get EC2 instance optimization recommendations |
-| `compute-optimizer:GetECSServiceRecommendations` | Get ECS service optimization recommendations |
-| `compute-optimizer:GetEBSVolumeRecommendations` | Get EBS volume optimization recommendations |
-| **Trusted Advisor** | |
-| `trustedadvisor:GetCheckResult` | Get results from Trusted Advisor checks |
-| `trustedadvisor:DescribeCheckItems` | Describe Trusted Advisor check items |
-
----
-
-## Finomics Bronze Read-Only Permissions (FinomicsBronzeReadOnly)
-
-All actions below apply to `Resource: "*"`.
-
-| Service | Actions |
-|---------|---------|
-| **STS** | `sts:GetCallerIdentity` |
-| **Tag** | `tag:GetResources`, `tag:GetTagKeys`, `tag:GetTagValues` |
-| **Bedrock** | `bedrock:GetFoundationModel`, `bedrock:ListFoundationModels`, `bedrock:ListCustomModels`, `bedrock:GetCustomModel`, `bedrock:GetProvisionedModelThroughput`, `bedrock:ListProvisionedModelThroughputs`, `bedrock:ListTagsForResource`, `bedrock:GetModelInvocationLoggingConfiguration` |
-| **CloudWatch** | `cloudwatch:GetMetricData`, `cloudwatch:GetMetricStatistics`, `cloudwatch:ListMetrics`, `cloudwatch:DescribeAlarms`, `cloudwatch:ListDashboards` |
-| **CloudWatch Logs** | `logs:DescribeLogGroups`, `logs:DescribeLogStreams`, `logs:DescribeMetricFilters` |
-| **EC2** | `ec2:DescribeInstances`, `ec2:DescribeTags`, `ec2:DescribeVolumes`, `ec2:DescribeSnapshots`, `ec2:DescribeVpcs`, `ec2:DescribeSubnets`, `ec2:DescribeSecurityGroups`, `ec2:DescribeNetworkInterfaces`, `ec2:DescribeRouteTables`, `ec2:DescribeInternetGateways`, `ec2:DescribeNatGateways`, `ec2:DescribeAddresses`, `ec2:DescribeKeyPairs`, `ec2:DescribeAvailabilityZones`, `ec2:DescribeRegions`, `ec2:DescribePlacementGroups`, `ec2:DescribeVpcPeeringConnections`, `ec2:DescribeVpcEndpoints`, `ec2:DescribeReservedInstances`, `ec2:DescribeImages`, `ec2:DescribeInstanceTypes` |
-| **ACM** | `acm:ListCertificates`, `acm:DescribeCertificate` |
-| **API Gateway** | `apigateway:GET` |
-| **CloudFormation** | `cloudformation:ListStacks`, `cloudformation:DescribeStacks`, `cloudformation:ListStackResources`, `cloudformation:DescribeStackResources`, `cloudformation:DescribeStackEvents`, `cloudformation:GetTemplate` |
-| **CloudFront** | `cloudfront:ListDistributions`, `cloudfront:GetDistribution`, `cloudfront:ListFunctions`, `cloudfront:ListCachePolicies`, `cloudfront:ListOriginRequestPolicies`, `cloudfront:ListTagsForResource` |
-| **CloudTrail** | `cloudtrail:ListTrails`, `cloudtrail:GetTrail`, `cloudtrail:DescribeTrails`, `cloudtrail:GetTrailStatus`, `cloudtrail:GetEventSelectors`, `cloudtrail:ListTags` |
-| **Config** | `config:DescribeConfigurationRecorders`, `config:DescribeDeliveryChannels`, `config:DescribeConfigRules`, `config:GetComplianceDetailsByConfigRule`, `config:DescribeConfigurationRecorderStatus`, `config:DescribeDeliveryChannelStatus` |
-| **DeepRacer** | `deepracer:ListModels`, `deepracer:GetModel`, `deepracer:ListLeaderboards`, `deepracer:ListRaceTracks`, `deepracer:ListCars`, `deepracer:GetCar` |
-| **Direct Connect** | `directconnect:DescribeConnections`, `directconnect:DescribeVirtualInterfaces`, `directconnect:DescribeDirectConnectGateways`, `directconnect:DescribeLags`, `directconnect:DescribeLocations` |
-| **DynamoDB** | `dynamodb:ListTables`, `dynamodb:DescribeTable`, `dynamodb:ListGlobalTables`, `dynamodb:DescribeGlobalTable`, `dynamodb:DescribeTimeToLive`, `dynamodb:ListBackups`, `dynamodb:ListTagsOfResource` |
-| **ECR** | `ecr:DescribeRepositories`, `ecr:DescribeImages`, `ecr:GetRepositoryPolicy`, `ecr:ListImages`, `ecr:ListTagsForResource` |
-| **ECS** | `ecs:ListClusters`, `ecs:DescribeClusters`, `ecs:ListServices`, `ecs:DescribeServices`, `ecs:ListTasks`, `ecs:DescribeTasks`, `ecs:ListContainerInstances`, `ecs:DescribeContainerInstances` |
-| **EFS** | `elasticfilesystem:DescribeFileSystems`, `elasticfilesystem:DescribeMountTargets`, `elasticfilesystem:DescribeAccessPoints`, `elasticfilesystem:DescribeLifecycleConfiguration` |
-| **EKS** | `eks:ListClusters`, `eks:DescribeCluster`, `eks:ListNodegroups`, `eks:DescribeNodegroup`, `eks:ListAddons`, `eks:DescribeAddon`, `eks:ListFargateProfiles` |
-| **ElastiCache** | `elasticache:DescribeCacheClusters`, `elasticache:DescribeReplicationGroups`, `elasticache:DescribeCacheSubnetGroups`, `elasticache:DescribeCacheParameterGroups`, `elasticache:ListTagsForResource` |
-| **ELB** | `elasticloadbalancing:DescribeLoadBalancers`, `elasticloadbalancing:DescribeTargetGroups`, `elasticloadbalancing:DescribeListeners`, `elasticloadbalancing:DescribeRules`, `elasticloadbalancing:DescribeTags`, `elasticloadbalancing:DescribeTargetHealth` |
-| **Elasticsearch / OpenSearch** | `es:ListDomainNames`, `es:DescribeElasticsearchDomains`, `opensearch:ListDomainNames`, `opensearch:DescribeDomains`, `opensearch:DescribeDomain`, `opensearch:ListTags` |
-| **Location (Geo)** | `geo:ListPlaceIndexes`, `geo:ListMaps`, `geo:ListRouteCalculators`, `geo:ListTrackers`, `geo:ListGeofenceCollections`, `geo:DescribeMap`, `geo:DescribeTracker`, `geo:DescribePlaceIndex`, `geo:DescribeRouteCalculator` |
-| **Glacier** | `glacier:ListVaults`, `glacier:DescribeVault`, `glacier:ListJobs`, `glacier:GetVaultNotifications` |
-| **Glue** | `glue:GetJobs`, `glue:GetJob`, `glue:GetDatabases`, `glue:GetTables`, `glue:GetCrawlers`, `glue:GetCrawler`, `glue:GetConnections`, `glue:GetDevEndpoints`, `glue:GetTriggers` |
-| **GuardDuty** | `guardduty:ListDetectors`, `guardduty:GetDetector`, `guardduty:ListFindings`, `guardduty:GetFindings`, `guardduty:ListMembers`, `guardduty:GetMasterAccount` |
-| **KMS** | `kms:ListKeys`, `kms:DescribeKey`, `kms:ListAliases`, `kms:GetKeyPolicy`, `kms:ListKeyPolicies`, `kms:ListResourceTags` |
-| **Lambda** | `lambda:ListFunctions`, `lambda:GetFunction`, `lambda:GetFunctionConfiguration`, `lambda:ListEventSourceMappings`, `lambda:ListAliases`, `lambda:ListVersionsByFunction`, `lambda:ListTags` |
-| **Payment Cryptography** | `payment-cryptography:ListKeys`, `payment-cryptography:GetKey`, `payment-cryptography:ListTagsForResource` |
-| **RDS** | `rds:DescribeDBInstances`, `rds:DescribeDBClusters`, `rds:DescribeDBSnapshots`, `rds:DescribeDBSubnetGroups`, `rds:DescribeDBParameterGroups`, `rds:ListTagsForResource` |
-| **Route 53** | `route53:ListHostedZones`, `route53:GetHostedZone`, `route53:ListResourceRecordSets`, `route53:ListHealthChecks`, `route53:GetHealthCheck`, `route53:ListQueryLoggingConfigs` |
-| **Route 53 Domains** | `route53domains:ListDomains`, `route53domains:GetDomainDetail` |
-| **S3** | `s3:ListBuckets`, `s3:GetBucketLocation`, `s3:GetBucketEncryption`, `s3:GetBucketVersioning`, `s3:GetBucketTagging`, `s3:GetBucketLogging`, `s3:GetBucketLifecycle`, `s3:GetBucketPublicAccessBlock`, `s3:GetBucketAcl`, `s3:GetBucketPolicy`, `s3:GetBucketNotification`, `s3:GetBucketReplication` |
-| **Secrets Manager** | `secretsmanager:ListSecrets`, `secretsmanager:DescribeSecret` |
-| **Security Hub** | `securityhub:GetFindings`, `securityhub:DescribeHub`, `securityhub:ListEnabledProductsForImport`, `securityhub:GetInsights`, `securityhub:DescribeStandards` |
-| **SNS** | `sns:ListTopics`, `sns:GetTopicAttributes`, `sns:ListSubscriptionsByTopic`, `sns:ListSubscriptions`, `sns:ListTagsForResource` |
-| **SQS** | `sqs:ListQueues`, `sqs:GetQueueAttributes`, `sqs:ListQueueTags` |
-| **SSM** | `ssm:DescribeInstanceInformation`, `ssm:DescribeParameters`, `ssm:ListDocuments`, `ssm:GetInventory`, `ssm:DescribePatchBaselines`, `ssm:ListAssociations` |
-| **Step Functions** | `states:ListStateMachines`, `states:DescribeStateMachine`, `states:ListExecutions`, `states:DescribeExecution`, `states:ListActivities`, `states:ListTagsForResource` |
-| **Support** | `support:DescribeCases`, `support:DescribeTrustedAdvisorChecks`, `support:DescribeTrustedAdvisorCheckResult`, `support:DescribeTrustedAdvisorCheckSummaries`, `support:DescribeSeverityLevels` |
-| **WAF** | `waf:ListWebACLs`, `waf:GetWebACL`, `waf-regional:ListWebACLs`, `waf-regional:GetWebACL`, `wafv2:ListWebACLs`, `wafv2:GetWebACL`, `wafv2:ListRuleGroups`, `wafv2:GetRuleGroup`, `wafv2:ListTagsForResource` |
+1. **apigateway** — API Gateway
+2. **apprunner** — App Runner
+3. **autoscaling** — Auto Scaling
+4. **batch** — AWS Batch
+5. **bedrock** — Amazon Bedrock
+6. **ce** — Cost Explorer
+7. **cloudformation** — CloudFormation
+8. **cloudfront** — CloudFront
+9. **cloudwatch** — CloudWatch
+10. **compute-optimizer** — Compute Optimizer
+11. **cost-optimization-hub** — Cost Optimization Hub
+12. **dax** — DynamoDB Accelerator
+13. **dynamodb** — DynamoDB
+14. **ec2** — EC2 (instances, volumes, networking, VPCs)
+15. **ecr** — Elastic Container Registry
+16. **ecs** — Elastic Container Service
+17. **eks** — Elastic Kubernetes Service
+18. **elasticache** — ElastiCache
+19. **elasticfilesystem** — EFS
+20. **elasticloadbalancing** — ELB (ALB/NLB/CLB)
+21. **elasticmapreduce** — EMR
+22. **es** — OpenSearch / Elasticsearch
+23. **firehose** — Kinesis Data Firehose
+24. **glacier** — S3 Glacier
+25. **glue** — AWS Glue
+26. **kafka** — MSK (Managed Kafka)
+27. **kinesis** — Kinesis Data Streams
+28. **lambda** — Lambda
+29. **lightsail** — Lightsail
+30. **logs** — CloudWatch Logs
+31. **memorydb** — MemoryDB for Redis
+32. **mq** — Amazon MQ
+33. **organizations** — AWS Organizations
+34. **rds** — RDS (also covers Aurora + Neptune)
+35. **redshift** — Redshift
+36. **s3** — S3
+37. **sagemaker** — SageMaker
+38. **sns** — SNS
+39. **sqs** — SQS
+40. **ssm** — Systems Manager
+41. **states** — Step Functions
+42. **sts** — Security Token Service
+43. **support** — Trusted Advisor
+44. **tag** — Resource Groups Tagging
+45. **timestream** — Timestream
 
 ---
 
-## S3 Bucket Policy Permissions (Finomics Bucket)
+## Cost Explorer & Organizations
 
-| Permission | Principal | Description |
-|------------|-----------|-------------|
-| **Cross-Account Pipeline Access** | Pipeline Role ARN | |
-| `s3:GetObject` | Pipeline Role | Read data files from the bucket |
-| `s3:ListBucket` | Pipeline Role | List bucket contents for discovery |
-| `s3:GetBucketVersioning` | Pipeline Role | Get bucket versioning configuration |
-| `s3:GetBucketPolicyStatus` | Pipeline Role | Check if bucket has a public policy |
-| `s3:GetEncryptionConfiguration` | Pipeline Role | Retrieve bucket encryption settings |
+### Cost Explorer (`ce`)
+
+| Action                                    | Description                                                |
+| ----------------------------------------- | ---------------------------------------------------------- |
+| `GetCostAndUsage`                       | Retrieve cost and usage data for a specified time period   |
+| `GetCostForecast`                       | Get a forecast of future costs based on historical data    |
+| `GetDimensionValues`                    | List available filter values (e.g. service names, regions) |
+| `GetTags`                               | List cost allocation tag keys and values                   |
+| `ListCostAllocationTags`                | List all cost allocation tags and their status             |
+| `GetRightsizingRecommendation`          | Get EC2 rightsizing recommendations to reduce spend        |
+| `GetSavingsPlansUtilizationDetails`     | View per-resource Savings Plans utilization                |
+| `GetSavingsPlansPurchaseRecommendation` | Get recommendations for purchasing Savings Plans           |
+| `GetSavingsPlansCoverage`               | See how much usage is covered by Savings Plans             |
+| `GetSavingsPlansUtilization`            | View overall Savings Plans utilization rate                |
+| `GetReservationUtilization`             | View Reserved Instance utilization rate                    |
+| `GetReservationCoverage`                | See how much usage is covered by Reserved Instances        |
+| `GetReservationPurchaseRecommendation`  | Get recommendations for purchasing Reserved Instances      |
+
+### Cost Optimization Hub (`cost-optimization-hub`)
+
+| Action                          | Description                                        |
+| ------------------------------- | -------------------------------------------------- |
+| `ListRecommendations`         | List all cost optimization recommendations         |
+| `ListRecommendationSummaries` | Get summarized recommendation counts and savings   |
+| `GetPreferences`              | Retrieve Cost Optimization Hub preference settings |
+| `GetRecommendation`           | Get details of a specific recommendation           |
+
+### Organizations (`organizations`)
+
+| Action                    | Description                                 |
+| ------------------------- | ------------------------------------------- |
+| `DescribeOrganization`  | Get details about the AWS Organization      |
+| `DescribeAccount`       | Get details about a specific member account |
+| `ListAccounts`          | List all accounts in the organization       |
+| `ListParents`           | Get the parent OU or root for an account/OU |
+| `ListAccountsForParent` | List accounts under a specific OU or root   |
+| `ListRoots`             | List the root(s) of the organization        |
 
 ---
 
-## IAM Role Trust Policy Permissions
+## Observability & Recommendations
 
-| Permission | Principal | Description |
-|------------|-----------|-------------|
-| `sts:AssumeRole` | Trusted Account ARNs | Allow specified accounts/roles to assume the Finomics access role |
+### CloudWatch (`cloudwatch`)
+
+| Action                  | Description                                       |
+| ----------------------- | ------------------------------------------------- |
+| `GetMetricData`       | Retrieve metric data points in batch              |
+| `GetMetricStatistics` | Get statistics (avg, sum, max, etc.) for a metric |
+| `ListMetrics`         | List all available metrics across services        |
+| `DescribeAlarms`      | List CloudWatch alarms and their states           |
+| `ListDashboards`      | List CloudWatch dashboards                        |
+
+### CloudWatch Logs (`logs`)
+
+| Action                    | Description                                        |
+| ------------------------- | -------------------------------------------------- |
+| `DescribeLogGroups`     | List log groups and their retention settings       |
+| `DescribeLogStreams`    | List log streams within a log group                |
+| `DescribeMetricFilters` | List metric filters that extract metrics from logs |
+
+### Compute Optimizer (`compute-optimizer`)
+
+| Action                                   | Description                                           |
+| ---------------------------------------- | ----------------------------------------------------- |
+| `GetEnrollmentStatus`                  | Check if the account is enrolled in Compute Optimizer |
+| `GetEnrollmentStatusesForOrganization` | Check enrollment across all org accounts              |
+| `GetRecommendationSummaries`           | Get aggregated recommendation counts by resource type |
+| `GetRecommendationPreferences`         | View preference settings (e.g. enhanced metrics)      |
+| `GetEC2InstanceRecommendations`        | Get rightsizing recommendations for EC2 instances     |
+| `GetAutoScalingGroupRecommendations`   | Get rightsizing recommendations for ASGs              |
+| `GetECSServiceRecommendations`         | Get recommendations for ECS Fargate services          |
+| `GetEBSVolumeRecommendations`          | Get recommendations for EBS volume types/sizes        |
+| `GetLambdaFunctionRecommendations`     | Get memory configuration recommendations for Lambda   |
+| `GetRDSDatabaseRecommendations`        | Get rightsizing recommendations for RDS instances     |
+| `GetLicenseRecommendations`            | Get OS/license optimization recommendations           |
+| `GetIdleRecommendations`               | Identify idle or underutilized resources              |
+
+### Trusted Advisor (`support`)
+
+| Action                                   | Description                               |
+| ---------------------------------------- | ----------------------------------------- |
+| `DescribeTrustedAdvisorChecks`         | List all available Trusted Advisor checks |
+| `DescribeTrustedAdvisorCheckResult`    | Get results for a specific check          |
+| `DescribeTrustedAdvisorCheckSummaries` | Get summary status for multiple checks    |
 
 ---
 
-## Notes
+## Utility
 
-- All permissions follow the **least privilege principle** where possible
-- Resource-level restrictions are applied for EC2, RDS, Auto Scaling, CloudWatch, SSM, Compute Optimizer, and Trusted Advisor
-- Cost Explorer and Organizations APIs require wildcard (`*`) resources as they don't support resource-level permissions
-- `FinomicsBronzeReadOnly` permissions use wildcard (`*`) resource as required by those service APIs
-- Cross-account access uses role assumption via `sts:AssumeRole` with explicit trust policies
+### STS (`sts`)
+
+| Action                | Description                                         |
+| --------------------- | --------------------------------------------------- |
+| `GetCallerIdentity` | Get the account ID, IAM user/role ARN of the caller |
+
+### Resource Groups Tagging (`tag`)
+
+| Action           | Description                                     |
+| ---------------- | ----------------------------------------------- |
+| `GetResources` | List resources across services filtered by tags |
+| `GetTagKeys`   | List all tag keys in use across the account     |
+| `GetTagValues` | List all values for a specific tag key          |
+
+---
+
+## Compute
+
+### EC2 (`ec2`)
+
+| Action                            | Description                                         |
+| --------------------------------- | --------------------------------------------------- |
+| `DescribeInstances`             | List instances with type, state, tags, networking   |
+| `DescribeTags`                  | List tags across all EC2 resource types             |
+| `DescribeVolumes`               | List EBS volumes with size, type, IOPS, attachments |
+| `DescribeSnapshots`             | List EBS snapshots with size and creation date      |
+| `DescribeVpcs`                  | List VPCs and their CIDR blocks                     |
+| `DescribeSubnets`               | List subnets with AZ and available IPs              |
+| `DescribeSecurityGroups`        | List security groups and their rules                |
+| `DescribeNetworkInterfaces`     | List ENIs and their attachments                     |
+| `DescribeRouteTables`           | List route tables and routes                        |
+| `DescribeInternetGateways`      | List internet gateways and VPC attachments          |
+| `DescribeNatGateways`           | List NAT gateways with state and subnet             |
+| `DescribeAddresses`             | List Elastic IPs and their associations             |
+| `DescribeKeyPairs`              | List SSH key pairs                                  |
+| `DescribeAvailabilityZones`     | List AZs in the region                              |
+| `DescribeRegions`               | List all AWS regions                                |
+| `DescribePlacementGroups`       | List placement groups                               |
+| `DescribeVpcPeeringConnections` | List VPC peering connections                        |
+| `DescribeVpcEndpoints`          | List VPC endpoints (gateway and interface)          |
+| `DescribeReservedInstances`     | List purchased Reserved Instances                   |
+| `DescribeImages`                | List AMIs available to the account                  |
+| `DescribeInstanceTypes`         | List instance type specs (vCPU, memory, etc.)       |
+
+### Auto Scaling (`autoscaling`)
+
+| Action                        | Description                                   |
+| ----------------------------- | --------------------------------------------- |
+| `DescribeAutoScalingGroups` | List ASGs with instance counts, launch config |
+| `DescribePolicies`          | List scaling policies attached to ASGs        |
+
+### Lambda (`lambda`)
+
+| Action                       | Description                                        |
+| ---------------------------- | -------------------------------------------------- |
+| `ListFunctions`            | List all Lambda functions                          |
+| `GetFunction`              | Get function code location and config              |
+| `GetFunctionConfiguration` | Get runtime, memory, timeout, environment settings |
+| `ListEventSourceMappings`  | List event source triggers (SQS, Kinesis, etc.)    |
+| `ListAliases`              | List function aliases                              |
+| `ListVersionsByFunction`   | List published versions of a function              |
+| `ListTags`                 | List tags on a function                            |
+
+### Lightsail (`lightsail`)
+
+| Action                     | Description                                       |
+| -------------------------- | ------------------------------------------------- |
+| `GetInstances`           | List Lightsail instances with plan/bundle details |
+| `GetRelationalDatabases` | List Lightsail managed databases                  |
+| `GetLoadBalancers`       | List Lightsail load balancers                     |
+| `GetContainerServices`   | List Lightsail container services                 |
+| `GetDisks`               | List Lightsail block storage disks                |
+
+### Batch (`batch`)
+
+| Action                          | Description                                   |
+| ------------------------------- | --------------------------------------------- |
+| `DescribeComputeEnvironments` | List compute environments with instance types |
+| `DescribeJobQueues`           | List job queues and their priority/state      |
+| `DescribeJobDefinitions`      | List job definitions with vCPU/memory config  |
+| `ListJobs`                    | List jobs in a queue                          |
+| `ListTagsForResource`         | List tags on Batch resources                  |
+
+### App Runner (`apprunner`)
+
+| Action                  | Description                               |
+| ----------------------- | ----------------------------------------- |
+| `ListServices`        | List App Runner services                  |
+| `DescribeService`     | Get service config (CPU, memory, scaling) |
+| `ListTagsForResource` | List tags on App Runner services          |
+
+---
+
+## Containers
+
+### ECS (`ecs`)
+
+| Action                         | Description                                         |
+| ------------------------------ | --------------------------------------------------- |
+| `ListClusters`               | List ECS clusters                                   |
+| `DescribeClusters`           | Get cluster capacity, service count, status         |
+| `ListServices`               | List services in a cluster                          |
+| `DescribeServices`           | Get service config (task count, LB, deployment)     |
+| `ListTasks`                  | List running tasks                                  |
+| `DescribeTasks`              | Get task details (container status, resource usage) |
+| `ListTaskDefinitions`        | List task definition families and revisions         |
+| `DescribeTaskDefinition`     | Get CPU, memory, container definitions              |
+| `ListContainerInstances`     | List EC2 instances in an ECS cluster                |
+| `DescribeContainerInstances` | Get instance capacity and registered resources      |
+
+### ECR (`ecr`)
+
+| Action                   | Description                         |
+| ------------------------ | ----------------------------------- |
+| `DescribeRepositories` | List container image repositories   |
+| `DescribeImages`       | List images with size and push date |
+| `GetRepositoryPolicy`  | Get the repository access policy    |
+| `ListImages`           | List image tags in a repository     |
+| `ListTagsForResource`  | List tags on repositories           |
+
+### EKS (`eks`)
+
+| Action                  | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| `ListClusters`        | List EKS clusters                                |
+| `DescribeCluster`     | Get cluster version, endpoint, networking config |
+| `ListNodegroups`      | List managed node groups                         |
+| `DescribeNodegroup`   | Get node group instance types, scaling config    |
+| `ListAddons`          | List installed cluster add-ons                   |
+| `DescribeAddon`       | Get add-on version and config                    |
+| `ListFargateProfiles` | List Fargate profiles for serverless pods        |
+
+---
+
+## Databases
+
+### RDS (`rds`) — also covers Aurora & Neptune
+
+| Action                         | Description                                   |
+| ------------------------------ | --------------------------------------------- |
+| `DescribeDBInstances`        | List DB instances with engine, class, storage |
+| `DescribeDBClusters`         | List Aurora/Neptune clusters with config      |
+| `DescribeDBClusterEndpoints` | List cluster reader/writer endpoints          |
+| `DescribeDBSnapshots`        | List DB snapshots with size                   |
+| `DescribeDBSubnetGroups`     | List subnet groups used by DB instances       |
+| `DescribeDBParameterGroups`  | List parameter groups and their settings      |
+| `ListTagsForResource`        | List tags on RDS resources                    |
+
+### DynamoDB (`dynamodb`)
+
+| Action                  | Description                                     |
+| ----------------------- | ----------------------------------------------- |
+| `ListTables`          | List DynamoDB tables                            |
+| `DescribeTable`       | Get table config (capacity mode, RCU/WCU, size) |
+| `ListGlobalTables`    | List global (multi-region) tables               |
+| `DescribeGlobalTable` | Get global table replication config             |
+| `DescribeTimeToLive`  | Check if TTL is enabled on a table              |
+| `ListBackups`         | List on-demand backups                          |
+| `ListTagsOfResource`  | List tags on a table                            |
+
+### ElastiCache (`elasticache`)
+
+| Action                           | Description                                |
+| -------------------------------- | ------------------------------------------ |
+| `DescribeCacheClusters`        | List cache clusters with node type, engine |
+| `DescribeReplicationGroups`    | List Redis replication groups              |
+| `DescribeCacheSubnetGroups`    | List subnet groups for cache clusters      |
+| `DescribeCacheParameterGroups` | List parameter groups                      |
+| `ListTagsForResource`          | List tags on cache resources               |
+
+### MemoryDB (`memorydb`)
+
+| Action                      | Description                                   |
+| --------------------------- | --------------------------------------------- |
+| `DescribeClusters`        | List MemoryDB clusters with node type, shards |
+| `DescribeSubnetGroups`    | List subnet groups                            |
+| `DescribeParameterGroups` | List parameter groups                         |
+| `ListTags`                | List tags on MemoryDB resources               |
+
+### DAX (`dax`)
+
+| Action                      | Description                             |
+| --------------------------- | --------------------------------------- |
+| `DescribeClusters`        | List DAX clusters with node type, count |
+| `DescribeSubnetGroups`    | List subnet groups                      |
+| `DescribeParameterGroups` | List parameter groups                   |
+| `ListTags`                | List tags on DAX resources              |
+
+### Redshift (`redshift`)
+
+| Action                               | Description                                  |
+| ------------------------------------ | -------------------------------------------- |
+| `DescribeClusters`                 | List clusters with node type, count, storage |
+| `DescribeNodeConfigurationOptions` | List available node configs for resize       |
+| `DescribeReservedNodes`            | List purchased reserved nodes                |
+| `DescribeClusterSnapshots`         | List cluster snapshots                       |
+| `DescribeClusterSubnetGroups`      | List subnet groups                           |
+| `DescribeClusterParameterGroups`   | List parameter groups                        |
+| `DescribeTags`                     | List tags on Redshift resources              |
+
+### Timestream (`timestream`)
+
+| Action                  | Description                           |
+| ----------------------- | ------------------------------------- |
+| `ListDatabases`       | List Timestream databases             |
+| `DescribeDatabase`    | Get database retention settings       |
+| `ListTables`          | List tables in a database             |
+| `DescribeTable`       | Get table schema and retention config |
+| `ListTagsForResource` | List tags on Timestream resources     |
+
+### OpenSearch / Elasticsearch (`es`)
+
+| Action              | Description                                         |
+| ------------------- | --------------------------------------------------- |
+| `ListDomainNames` | List OpenSearch domains                             |
+| `DescribeDomains` | Get config for multiple domains                     |
+| `DescribeDomain`  | Get a single domain's instance type, count, storage |
+| `ListTags`        | List tags on a domain                               |
+
+---
+
+## Storage
+
+### S3 (`s3`)
+
+| Action                          | Description                                      |
+| ------------------------------- | ------------------------------------------------ |
+| `ListAllMyBuckets`            | List all S3 buckets in the account               |
+| `ListBucket`                  | List objects within a bucket                     |
+| `GetObject`                   | Read object contents                             |
+| `GetBucketLocation`           | Get the region a bucket is in                    |
+| `GetEncryptionConfiguration`  | Get bucket default encryption settings           |
+| `GetBucketVersioning`         | Check if versioning is enabled                   |
+| `GetBucketTagging`            | Get bucket tags                                  |
+| `GetBucketLogging`            | Get access logging config                        |
+| `GetLifecycleConfiguration`   | Get object lifecycle transition/expiration rules |
+| `GetBucketPublicAccessBlock`  | Get public access block settings                 |
+| `GetBucketAcl`                | Get bucket access control list                   |
+| `GetBucketPolicy`             | Get bucket resource policy                       |
+| `GetBucketPolicyStatus`       | Check if bucket policy allows public access      |
+| `GetBucketNotification`       | Get event notification config                    |
+| `GetReplicationConfiguration` | Get cross-region replication config              |
+
+### Glacier (`glacier`)
+
+| Action                    | Description                       |
+| ------------------------- | --------------------------------- |
+| `ListVaults`            | List Glacier vaults               |
+| `DescribeVault`         | Get vault size, archive count     |
+| `ListJobs`              | List retrieval and inventory jobs |
+| `GetVaultNotifications` | Get vault notification config     |
+
+### EFS (`elasticfilesystem`)
+
+| Action                             | Description                                  |
+| ---------------------------------- | -------------------------------------------- |
+| `DescribeFileSystems`            | List file systems with size, throughput mode |
+| `DescribeMountTargets`           | List mount targets and their subnets         |
+| `DescribeAccessPoints`           | List access points                           |
+| `DescribeLifecycleConfiguration` | Get lifecycle policies (IA transitions)      |
+
+---
+
+## Networking & Content Delivery
+
+### CloudFront (`cloudfront`)
+
+| Action                        | Description                                       |
+| ----------------------------- | ------------------------------------------------- |
+| `ListDistributions`         | List CDN distributions                            |
+| `GetDistribution`           | Get distribution config (origins, cache, pricing) |
+| `ListFunctions`             | List CloudFront Functions                         |
+| `ListCachePolicies`         | List cache policies                               |
+| `ListOriginRequestPolicies` | List origin request policies                      |
+| `ListTagsForResource`       | List tags on distributions                        |
+
+### Elastic Load Balancing (`elasticloadbalancing`)
+
+| Action                    | Description                                |
+| ------------------------- | ------------------------------------------ |
+| `DescribeLoadBalancers` | List ALBs, NLBs, and CLBs with config      |
+| `DescribeTargetGroups`  | List target groups and health check config |
+| `DescribeListeners`     | List listeners (port, protocol, rules)     |
+| `DescribeRules`         | List routing rules on a listener           |
+| `DescribeTags`          | List tags on LB resources                  |
+| `DescribeTargetHealth`  | Get health status of targets               |
+
+### API Gateway (`apigateway`)
+
+| Action  | Description                                   |
+| ------- | --------------------------------------------- |
+| `GET` | Read-only access to all API Gateway resources |
+
+---
+
+## Streaming & Messaging
+
+### Kinesis Data Streams (`kinesis`)
+
+| Action                    | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `ListStreams`           | List Kinesis data streams                        |
+| `DescribeStream`        | Get shard count, retention, encryption config    |
+| `DescribeStreamSummary` | Get stream summary (lighter than DescribeStream) |
+| `ListTagsForStream`     | List tags on a stream                            |
+
+### Kinesis Data Firehose (`firehose`)
+
+| Action                        | Description                                    |
+| ----------------------------- | ---------------------------------------------- |
+| `ListDeliveryStreams`       | List Firehose delivery streams                 |
+| `DescribeDeliveryStream`    | Get destination, buffering, compression config |
+| `ListTagsForDeliveryStream` | List tags on a delivery stream                 |
+
+### MSK — Managed Kafka (`kafka`)
+
+| Action                  | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| `ListClusters`        | List MSK clusters (provisioned)              |
+| `ListClustersV2`      | List MSK clusters (provisioned + serverless) |
+| `DescribeCluster`     | Get broker type, count, storage config       |
+| `DescribeClusterV2`   | Get cluster details (v2 API)                 |
+| `ListConfigurations`  | List custom MSK configurations               |
+| `ListTagsForResource` | List tags on MSK resources                   |
+
+### SNS (`sns`)
+
+| Action                       | Description                                    |
+| ---------------------------- | ---------------------------------------------- |
+| `ListTopics`               | List SNS topics                                |
+| `GetTopicAttributes`       | Get topic config (delivery policy, encryption) |
+| `ListSubscriptionsByTopic` | List subscriptions for a topic                 |
+| `ListSubscriptions`        | List all subscriptions                         |
+| `ListTagsForResource`      | List tags on topics                            |
+
+### SQS (`sqs`)
+
+| Action                 | Description                                           |
+| ---------------------- | ----------------------------------------------------- |
+| `ListQueues`         | List SQS queues                                       |
+| `GetQueueAttributes` | Get queue config (visibility timeout, retention, DLQ) |
+| `ListQueueTags`      | List tags on a queue                                  |
+
+### Amazon MQ (`mq`)
+
+| Action             | Description                                       |
+| ------------------ | ------------------------------------------------- |
+| `ListBrokers`    | List MQ brokers (ActiveMQ / RabbitMQ)             |
+| `DescribeBroker` | Get broker instance type, engine, deployment mode |
+| `ListTags`       | List tags on brokers                              |
+
+---
+
+## ML & AI
+
+### Bedrock (`bedrock`)
+
+| Action                                     | Description                                  |
+| ------------------------------------------ | -------------------------------------------- |
+| `GetFoundationModel`                     | Get details of a foundation model            |
+| `ListFoundationModels`                   | List available foundation models             |
+| `ListCustomModels`                       | List fine-tuned custom models                |
+| `GetCustomModel`                         | Get custom model config                      |
+| `GetProvisionedModelThroughput`          | Get provisioned throughput details           |
+| `ListProvisionedModelThroughputs`        | List all provisioned throughput reservations |
+| `ListTagsForResource`                    | List tags on Bedrock resources               |
+| `GetModelInvocationLoggingConfiguration` | Get model invocation logging settings        |
+
+### SageMaker (`sagemaker`)
+
+| Action                       | Description                                          |
+| ---------------------------- | ---------------------------------------------------- |
+| `ListEndpoints`            | List inference endpoints                             |
+| `DescribeEndpoint`         | Get endpoint instance type, count, variant config    |
+| `DescribeEndpointConfig`   | Get endpoint configuration (instance types, weights) |
+| `ListNotebookInstances`    | List notebook instances                              |
+| `DescribeNotebookInstance` | Get notebook instance type, volume size              |
+| `ListTrainingJobs`         | List training jobs                                   |
+| `DescribeTrainingJob`      | Get training job instance type, duration, status     |
+| `ListTags`                 | List tags on SageMaker resources                     |
+
+---
+
+## Data Processing & ETL
+
+### Glue (`glue`)
+
+| Action              | Description                             |
+| ------------------- | --------------------------------------- |
+| `GetJobs`         | List Glue ETL jobs                      |
+| `GetJob`          | Get job config (worker type, DPU count) |
+| `GetDatabases`    | List Glue Data Catalog databases        |
+| `GetTables`       | List tables in a database               |
+| `GetCrawlers`     | List Glue crawlers                      |
+| `GetCrawler`      | Get crawler config and schedule         |
+| `GetConnections`  | List data source connections            |
+| `GetDevEndpoints` | List development endpoints              |
+| `GetTriggers`     | List job triggers                       |
+
+### EMR (`elasticmapreduce`)
+
+| Action                 | Description                                |
+| ---------------------- | ------------------------------------------ |
+| `ListClusters`       | List EMR clusters                          |
+| `DescribeCluster`    | Get cluster instance types, status, config |
+| `ListInstances`      | List EC2 instances in a cluster            |
+| `ListInstanceGroups` | List instance groups (master, core, task)  |
+
+---
+
+## Infrastructure & Orchestration
+
+### CloudFormation (`cloudformation`)
+
+| Action                     | Description                                  |
+| -------------------------- | -------------------------------------------- |
+| `ListStacks`             | List all stacks and their status             |
+| `DescribeStacks`         | Get stack parameters, outputs, status        |
+| `ListStackResources`     | List resources in a stack                    |
+| `DescribeStackResources` | Get resource details within a stack          |
+| `DescribeStackEvents`    | Get stack event history                      |
+| `GetTemplate`            | Retrieve the stack's CloudFormation template |
+
+### Step Functions (`states`)
+
+| Action                   | Description                              |
+| ------------------------ | ---------------------------------------- |
+| `ListStateMachines`    | List state machines                      |
+| `DescribeStateMachine` | Get state machine definition, role, type |
+| `ListExecutions`       | List executions of a state machine       |
+| `DescribeExecution`    | Get execution status, input, output      |
+| `ListActivities`       | List Step Functions activities           |
+| `ListTagsForResource`  | List tags on state machines              |
+
+### Systems Manager (`ssm`)
+
+| Action                          | Description                                      |
+| ------------------------------- | ------------------------------------------------ |
+| `DescribeInstanceInformation` | List managed instances with OS, agent status     |
+| `DescribeParameters`          | List SSM parameters                              |
+| `ListDocuments`               | List SSM documents (runbooks, commands)          |
+| `GetInventory`                | Get software and config inventory from instances |
+| `DescribePatchBaselines`      | List patch baselines                             |
+| `ListAssociations`            | List State Manager associations                  |
