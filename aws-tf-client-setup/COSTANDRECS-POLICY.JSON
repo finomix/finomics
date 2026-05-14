@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CostExplorerAndRecs",
+      "Effect": "Allow",
+      "Action": [
+        "ce:GetCostAndUsage",
+        "ce:GetCostForecast",
+        "ce:GetDimensionValues",
+        "ce:GetTags",
+        "ce:ListCostAllocationTags",
+        "ce:GetRightsizingRecommendation",
+        "ce:GetSavingsPlansUtilizationDetails",
+        "ce:GetSavingsPlansPurchaseRecommendation",
+        "ce:GetSavingsPlansCoverage",
+        "ce:GetSavingsPlansUtilization",
+        "ce:GetReservationUtilization",
+        "ce:GetReservationCoverage",
+        "ce:GetReservationPurchaseRecommendation",
+        "cost-optimization-hub:ListRecommendations",
+        "cost-optimization-hub:ListRecommendationSummaries",
+        "cost-optimization-hub:GetPreferences",
+        "cost-optimization-hub:GetRecommendation",
+        "organizations:DescribeOrganization",
+        "organizations:DescribeAccount",
+        "organizations:ListAccounts",
+        "organizations:ListParents",
+        "organizations:ListAccountsForParent",
+        "organizations:ListRoots",
+        
+        "compute-optimizer:GetEnrollmentStatus",
+        "compute-optimizer:GetEnrollmentStatusesForOrganization",
+        "compute-optimizer:GetRecommendationSummaries",
+        "compute-optimizer:GetRecommendationPreferences",
+        "compute-optimizer:GetEC2InstanceRecommendations",
+        "compute-optimizer:GetAutoScalingGroupRecommendations",
+        "compute-optimizer:GetECSServiceRecommendations",
+        "compute-optimizer:GetEBSVolumeRecommendations",
+        "compute-optimizer:GetLambdaFunctionRecommendations",
+        "compute-optimizer:GetRDSDatabaseRecommendations",
+        "compute-optimizer:GetLicenseRecommendations",
+        "compute-optimizer:GetIdleRecommendations",
+
+        "support:DescribeTrustedAdvisorChecks",
+        "support:DescribeTrustedAdvisorCheckResult",
+        "support:DescribeTrustedAdvisorCheckSummaries",
+
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribePolicies"
+
+      ],
+      "Resource": "*"
+    },
+     {
+      "Sid": "S3BucketObjectReadFOCUS",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>",
+        "arn:aws:s3:::<BUCKET_NAME>/*"
+      ]
+    }
+  ]
+}
