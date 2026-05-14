@@ -1,56 +1,10 @@
 # IAM Policy — Permission Reference
 
-Read-only policy for viewing resource details, usage metrics, and cost optimization recommendations across 45 AWS services:
-
-1. **apigateway** — API Gateway
-2. **apprunner** — App Runner
-3. **autoscaling** — Auto Scaling
-4. **batch** — AWS Batch
-5. **bedrock** — Amazon Bedrock
-6. **ce** — Cost Explorer
-7. **cloudformation** — CloudFormation
-8. **cloudfront** — CloudFront
-9. **cloudwatch** — CloudWatch
-10. **compute-optimizer** — Compute Optimizer
-11. **cost-optimization-hub** — Cost Optimization Hub
-12. **dax** — DynamoDB Accelerator
-13. **dynamodb** — DynamoDB
-14. **ec2** — EC2 (instances, volumes, networking, VPCs)
-15. **ecr** — Elastic Container Registry
-16. **ecs** — Elastic Container Service
-17. **eks** — Elastic Kubernetes Service
-18. **elasticache** — ElastiCache
-19. **elasticfilesystem** — EFS
-20. **elasticloadbalancing** — ELB (ALB/NLB/CLB)
-21. **elasticmapreduce** — EMR
-22. **es** — OpenSearch / Elasticsearch
-23. **firehose** — Kinesis Data Firehose
-24. **glacier** — S3 Glacier
-25. **glue** — AWS Glue
-26. **kafka** — MSK (Managed Kafka)
-27. **kinesis** — Kinesis Data Streams
-28. **lambda** — Lambda
-29. **lightsail** — Lightsail
-30. **logs** — CloudWatch Logs
-31. **memorydb** — MemoryDB for Redis
-32. **mq** — Amazon MQ
-33. **organizations** — AWS Organizations
-34. **rds** — RDS (also covers Aurora + Neptune)
-35. **redshift** — Redshift
-36. **s3** — S3
-37. **sagemaker** — SageMaker
-38. **sns** — SNS
-39. **sqs** — SQS
-40. **ssm** — Systems Manager
-41. **states** — Step Functions
-42. **sts** — Security Token Service
-43. **support** — Trusted Advisor
-44. **tag** — Resource Groups Tagging
-45. **timestream** — Timestream
+Read-only policy for viewing resource configuration, usage metrics, and cost optimization recommendations across 44 AWS services. Scoped to prevent access to confidential data — only resource metadata, billing, and recommendations.
 
 ---
 
-## Cost Explorer & Organizations
+## Statement 1 — Cost Explorer & Organizations
 
 ### Cost Explorer (`ce`)
 
@@ -92,9 +46,29 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## Observability & Recommendations
+## Statement 2 — Resource Details & Metrics
 
-### CloudWatch (`cloudwatch`)
+### Utility
+
+#### STS (`sts`)
+
+| Action                | Description                                            |
+| --------------------- | ------------------------------------------------------ |
+| `GetCallerIdentity` | Get the account ID and IAM user/role ARN of the caller |
+
+#### Resource Groups Tagging (`tag`)
+
+| Action           | Description                                     |
+| ---------------- | ----------------------------------------------- |
+| `GetResources` | List resources across services filtered by tags |
+| `GetTagKeys`   | List all tag keys in use across the account     |
+| `GetTagValues` | List all values for a specific tag key          |
+
+---
+
+### Observability
+
+#### CloudWatch (`cloudwatch`)
 
 | Action                  | Description                                       |
 | ----------------------- | ------------------------------------------------- |
@@ -104,7 +78,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeAlarms`      | List CloudWatch alarms and their states           |
 | `ListDashboards`      | List CloudWatch dashboards                        |
 
-### CloudWatch Logs (`logs`)
+#### CloudWatch Logs (`logs`)
 
 | Action                    | Description                                        |
 | ------------------------- | -------------------------------------------------- |
@@ -112,7 +86,11 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeLogStreams`    | List log streams within a log group                |
 | `DescribeMetricFilters` | List metric filters that extract metrics from logs |
 
-### Compute Optimizer (`compute-optimizer`)
+---
+
+### Recommendations
+
+#### Compute Optimizer (`compute-optimizer`)
 
 | Action                                   | Description                                           |
 | ---------------------------------------- | ----------------------------------------------------- |
@@ -129,7 +107,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `GetLicenseRecommendations`            | Get OS/license optimization recommendations           |
 | `GetIdleRecommendations`               | Identify idle or underutilized resources              |
 
-### Trusted Advisor (`support`)
+#### Trusted Advisor (`support`)
 
 | Action                                   | Description                               |
 | ---------------------------------------- | ----------------------------------------- |
@@ -139,27 +117,9 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## Utility
+### Compute
 
-### STS (`sts`)
-
-| Action                | Description                                         |
-| --------------------- | --------------------------------------------------- |
-| `GetCallerIdentity` | Get the account ID, IAM user/role ARN of the caller |
-
-### Resource Groups Tagging (`tag`)
-
-| Action           | Description                                     |
-| ---------------- | ----------------------------------------------- |
-| `GetResources` | List resources across services filtered by tags |
-| `GetTagKeys`   | List all tag keys in use across the account     |
-| `GetTagValues` | List all values for a specific tag key          |
-
----
-
-## Compute
-
-### EC2 (`ec2`)
+#### EC2 (`ec2`)
 
 | Action                            | Description                                         |
 | --------------------------------- | --------------------------------------------------- |
@@ -185,26 +145,25 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeImages`                | List AMIs available to the account                  |
 | `DescribeInstanceTypes`         | List instance type specs (vCPU, memory, etc.)       |
 
-### Auto Scaling (`autoscaling`)
+#### Auto Scaling (`autoscaling`)
 
 | Action                        | Description                                   |
 | ----------------------------- | --------------------------------------------- |
 | `DescribeAutoScalingGroups` | List ASGs with instance counts, launch config |
 | `DescribePolicies`          | List scaling policies attached to ASGs        |
 
-### Lambda (`lambda`)
+#### Lambda (`lambda`)
 
-| Action                       | Description                                        |
-| ---------------------------- | -------------------------------------------------- |
-| `ListFunctions`            | List all Lambda functions                          |
-| `GetFunction`              | Get function code location and config              |
-| `GetFunctionConfiguration` | Get runtime, memory, timeout, environment settings |
-| `ListEventSourceMappings`  | List event source triggers (SQS, Kinesis, etc.)    |
-| `ListAliases`              | List function aliases                              |
-| `ListVersionsByFunction`   | List published versions of a function              |
-| `ListTags`                 | List tags on a function                            |
+| Action                       | Description                                             |
+| ---------------------------- | ------------------------------------------------------- |
+| `ListFunctions`            | List all Lambda functions                               |
+| `GetFunctionConfiguration` | Get runtime, memory, timeout, environment settings ⚠️ |
+| `ListEventSourceMappings`  | List event source triggers (SQS, Kinesis, etc.)         |
+| `ListAliases`              | List function aliases                                   |
+| `ListVersionsByFunction`   | List published versions of a function                   |
+| `ListTags`                 | List tags on a function                                 |
 
-### Lightsail (`lightsail`)
+#### Lightsail (`lightsail`)
 
 | Action                     | Description                                       |
 | -------------------------- | ------------------------------------------------- |
@@ -214,29 +173,29 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `GetContainerServices`   | List Lightsail container services                 |
 | `GetDisks`               | List Lightsail block storage disks                |
 
-### Batch (`batch`)
+#### Batch (`batch`)
 
-| Action                          | Description                                   |
-| ------------------------------- | --------------------------------------------- |
-| `DescribeComputeEnvironments` | List compute environments with instance types |
-| `DescribeJobQueues`           | List job queues and their priority/state      |
-| `DescribeJobDefinitions`      | List job definitions with vCPU/memory config  |
-| `ListJobs`                    | List jobs in a queue                          |
-| `ListTagsForResource`         | List tags on Batch resources                  |
+| Action                          | Description                                      |
+| ------------------------------- | ------------------------------------------------ |
+| `DescribeComputeEnvironments` | List compute environments with instance types    |
+| `DescribeJobQueues`           | List job queues and their priority/state         |
+| `DescribeJobDefinitions`      | Get job definitions with vCPU/memory config ⚠️ |
+| `ListJobs`                    | List jobs in a queue                             |
+| `ListTagsForResource`         | List tags on Batch resources                     |
 
-### App Runner (`apprunner`)
+#### App Runner (`apprunner`)
 
-| Action                  | Description                               |
-| ----------------------- | ----------------------------------------- |
-| `ListServices`        | List App Runner services                  |
-| `DescribeService`     | Get service config (CPU, memory, scaling) |
-| `ListTagsForResource` | List tags on App Runner services          |
+| Action                  | Description                                    |
+| ----------------------- | ---------------------------------------------- |
+| `ListServices`        | List App Runner services                       |
+| `DescribeService`     | Get service config (CPU, memory, scaling) ⚠️ |
+| `ListTagsForResource` | List tags on App Runner services               |
 
 ---
 
-## Containers
+### Containers
 
-### ECS (`ecs`)
+#### ECS (`ecs`)
 
 | Action                         | Description                                         |
 | ------------------------------ | --------------------------------------------------- |
@@ -247,11 +206,11 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `ListTasks`                  | List running tasks                                  |
 | `DescribeTasks`              | Get task details (container status, resource usage) |
 | `ListTaskDefinitions`        | List task definition families and revisions         |
-| `DescribeTaskDefinition`     | Get CPU, memory, container definitions              |
+| `DescribeTaskDefinition`     | Get CPU, memory, container definitions ⚠️         |
 | `ListContainerInstances`     | List EC2 instances in an ECS cluster                |
 | `DescribeContainerInstances` | Get instance capacity and registered resources      |
 
-### ECR (`ecr`)
+#### ECR (`ecr`)
 
 | Action                   | Description                         |
 | ------------------------ | ----------------------------------- |
@@ -261,7 +220,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `ListImages`           | List image tags in a repository     |
 | `ListTagsForResource`  | List tags on repositories           |
 
-### EKS (`eks`)
+#### EKS (`eks`)
 
 | Action                  | Description                                      |
 | ----------------------- | ------------------------------------------------ |
@@ -275,9 +234,9 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## Databases
+### Databases
 
-### RDS (`rds`) — also covers Aurora & Neptune
+#### RDS (`rds`) — also covers Aurora & Neptune
 
 | Action                         | Description                                   |
 | ------------------------------ | --------------------------------------------- |
@@ -289,7 +248,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeDBParameterGroups`  | List parameter groups and their settings      |
 | `ListTagsForResource`        | List tags on RDS resources                    |
 
-### DynamoDB (`dynamodb`)
+#### DynamoDB (`dynamodb`)
 
 | Action                  | Description                                     |
 | ----------------------- | ----------------------------------------------- |
@@ -301,7 +260,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `ListBackups`         | List on-demand backups                          |
 | `ListTagsOfResource`  | List tags on a table                            |
 
-### ElastiCache (`elasticache`)
+#### ElastiCache (`elasticache`)
 
 | Action                           | Description                                |
 | -------------------------------- | ------------------------------------------ |
@@ -311,7 +270,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeCacheParameterGroups` | List parameter groups                      |
 | `ListTagsForResource`          | List tags on cache resources               |
 
-### MemoryDB (`memorydb`)
+#### MemoryDB (`memorydb`)
 
 | Action                      | Description                                   |
 | --------------------------- | --------------------------------------------- |
@@ -320,7 +279,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeParameterGroups` | List parameter groups                         |
 | `ListTags`                | List tags on MemoryDB resources               |
 
-### DAX (`dax`)
+#### DAX (`dax`)
 
 | Action                      | Description                             |
 | --------------------------- | --------------------------------------- |
@@ -329,7 +288,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeParameterGroups` | List parameter groups                   |
 | `ListTags`                | List tags on DAX resources              |
 
-### Redshift (`redshift`)
+#### Redshift (`redshift`)
 
 | Action                               | Description                                  |
 | ------------------------------------ | -------------------------------------------- |
@@ -341,7 +300,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeClusterParameterGroups`   | List parameter groups                        |
 | `DescribeTags`                     | List tags on Redshift resources              |
 
-### Timestream (`timestream`)
+#### Timestream (`timestream`)
 
 | Action                  | Description                           |
 | ----------------------- | ------------------------------------- |
@@ -351,7 +310,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeTable`       | Get table schema and retention config |
 | `ListTagsForResource` | List tags on Timestream resources     |
 
-### OpenSearch / Elasticsearch (`es`)
+#### OpenSearch / Elasticsearch (`es`)
 
 | Action              | Description                                         |
 | ------------------- | --------------------------------------------------- |
@@ -362,15 +321,13 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## Storage
+### Storage
 
-### S3 (`s3`)
+#### S3 (`s3`) — bucket metadata (all buckets)
 
 | Action                          | Description                                      |
 | ------------------------------- | ------------------------------------------------ |
 | `ListAllMyBuckets`            | List all S3 buckets in the account               |
-| `ListBucket`                  | List objects within a bucket                     |
-| `GetObject`                   | Read object contents                             |
 | `GetBucketLocation`           | Get the region a bucket is in                    |
 | `GetEncryptionConfiguration`  | Get bucket default encryption settings           |
 | `GetBucketVersioning`         | Check if versioning is enabled                   |
@@ -384,7 +341,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `GetBucketNotification`       | Get event notification config                    |
 | `GetReplicationConfiguration` | Get cross-region replication config              |
 
-### Glacier (`glacier`)
+#### Glacier (`glacier`)
 
 | Action                    | Description                       |
 | ------------------------- | --------------------------------- |
@@ -393,7 +350,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `ListJobs`              | List retrieval and inventory jobs |
 | `GetVaultNotifications` | Get vault notification config     |
 
-### EFS (`elasticfilesystem`)
+#### EFS (`elasticfilesystem`)
 
 | Action                             | Description                                  |
 | ---------------------------------- | -------------------------------------------- |
@@ -404,9 +361,9 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## Networking & Content Delivery
+### Networking & Content Delivery
 
-### CloudFront (`cloudfront`)
+#### CloudFront (`cloudfront`)
 
 | Action                        | Description                                       |
 | ----------------------------- | ------------------------------------------------- |
@@ -417,7 +374,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `ListOriginRequestPolicies` | List origin request policies                      |
 | `ListTagsForResource`       | List tags on distributions                        |
 
-### Elastic Load Balancing (`elasticloadbalancing`)
+#### Elastic Load Balancing (`elasticloadbalancing`)
 
 | Action                    | Description                                |
 | ------------------------- | ------------------------------------------ |
@@ -428,17 +385,11 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeTags`          | List tags on LB resources                  |
 | `DescribeTargetHealth`  | Get health status of targets               |
 
-### API Gateway (`apigateway`)
-
-| Action  | Description                                   |
-| ------- | --------------------------------------------- |
-| `GET` | Read-only access to all API Gateway resources |
-
 ---
 
-## Streaming & Messaging
+### Streaming & Messaging
 
-### Kinesis Data Streams (`kinesis`)
+#### Kinesis Data Streams (`kinesis`)
 
 | Action                    | Description                                      |
 | ------------------------- | ------------------------------------------------ |
@@ -447,7 +398,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeStreamSummary` | Get stream summary (lighter than DescribeStream) |
 | `ListTagsForStream`     | List tags on a stream                            |
 
-### Kinesis Data Firehose (`firehose`)
+#### Kinesis Data Firehose (`firehose`)
 
 | Action                        | Description                                    |
 | ----------------------------- | ---------------------------------------------- |
@@ -455,7 +406,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `DescribeDeliveryStream`    | Get destination, buffering, compression config |
 | `ListTagsForDeliveryStream` | List tags on a delivery stream                 |
 
-### MSK — Managed Kafka (`kafka`)
+#### MSK — Managed Kafka (`kafka`)
 
 | Action                  | Description                                  |
 | ----------------------- | -------------------------------------------- |
@@ -466,17 +417,15 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `ListConfigurations`  | List custom MSK configurations               |
 | `ListTagsForResource` | List tags on MSK resources                   |
 
-### SNS (`sns`)
+#### SNS (`sns`)
 
-| Action                       | Description                                    |
-| ---------------------------- | ---------------------------------------------- |
-| `ListTopics`               | List SNS topics                                |
-| `GetTopicAttributes`       | Get topic config (delivery policy, encryption) |
-| `ListSubscriptionsByTopic` | List subscriptions for a topic                 |
-| `ListSubscriptions`        | List all subscriptions                         |
-| `ListTagsForResource`      | List tags on topics                            |
+| Action                  | Description                                    |
+| ----------------------- | ---------------------------------------------- |
+| `ListTopics`          | List SNS topics                                |
+| `GetTopicAttributes`  | Get topic config (delivery policy, encryption) |
+| `ListTagsForResource` | List tags on topics                            |
 
-### SQS (`sqs`)
+#### SQS (`sqs`)
 
 | Action                 | Description                                           |
 | ---------------------- | ----------------------------------------------------- |
@@ -484,7 +433,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `GetQueueAttributes` | Get queue config (visibility timeout, retention, DLQ) |
 | `ListQueueTags`      | List tags on a queue                                  |
 
-### Amazon MQ (`mq`)
+#### Amazon MQ (`mq`)
 
 | Action             | Description                                       |
 | ------------------ | ------------------------------------------------- |
@@ -494,9 +443,9 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## ML & AI
+### ML & AI
 
-### Bedrock (`bedrock`)
+#### Bedrock (`bedrock`)
 
 | Action                                     | Description                                  |
 | ------------------------------------------ | -------------------------------------------- |
@@ -509,7 +458,7 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 | `ListTagsForResource`                    | List tags on Bedrock resources               |
 | `GetModelInvocationLoggingConfiguration` | Get model invocation logging settings        |
 
-### SageMaker (`sagemaker`)
+#### SageMaker (`sagemaker`)
 
 | Action                       | Description                                          |
 | ---------------------------- | ---------------------------------------------------- |
@@ -524,23 +473,21 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## Data Processing & ETL
+### Data Processing & ETL
 
-### Glue (`glue`)
+#### Glue (`glue`)
 
-| Action              | Description                             |
-| ------------------- | --------------------------------------- |
-| `GetJobs`         | List Glue ETL jobs                      |
-| `GetJob`          | Get job config (worker type, DPU count) |
-| `GetDatabases`    | List Glue Data Catalog databases        |
-| `GetTables`       | List tables in a database               |
-| `GetCrawlers`     | List Glue crawlers                      |
-| `GetCrawler`      | Get crawler config and schedule         |
-| `GetConnections`  | List data source connections            |
-| `GetDevEndpoints` | List development endpoints              |
-| `GetTriggers`     | List job triggers                       |
+| Action           | Description                             |
+| ---------------- | --------------------------------------- |
+| `GetJobs`      | List Glue ETL jobs                      |
+| `GetJob`       | Get job config (worker type, DPU count) |
+| `GetDatabases` | List Glue Data Catalog databases        |
+| `GetTables`    | List tables in a database               |
+| `GetCrawlers`  | List Glue crawlers                      |
+| `GetCrawler`   | Get crawler config and schedule         |
+| `GetTriggers`  | List job triggers                       |
 
-### EMR (`elasticmapreduce`)
+#### EMR (`elasticmapreduce`)
 
 | Action                 | Description                                |
 | ---------------------- | ------------------------------------------ |
@@ -551,37 +498,61 @@ Read-only policy for viewing resource details, usage metrics, and cost optimizat
 
 ---
 
-## Infrastructure & Orchestration
+### Infrastructure & Orchestration
 
-### CloudFormation (`cloudformation`)
+#### CloudFormation (`cloudformation`)
 
-| Action                     | Description                                  |
-| -------------------------- | -------------------------------------------- |
-| `ListStacks`             | List all stacks and their status             |
-| `DescribeStacks`         | Get stack parameters, outputs, status        |
-| `ListStackResources`     | List resources in a stack                    |
-| `DescribeStackResources` | Get resource details within a stack          |
-| `DescribeStackEvents`    | Get stack event history                      |
-| `GetTemplate`            | Retrieve the stack's CloudFormation template |
+| Action                     | Description                           |
+| -------------------------- | ------------------------------------- |
+| `ListStacks`             | List all stacks and their status      |
+| `DescribeStacks`         | Get stack parameters, outputs, status |
+| `ListStackResources`     | List resources in a stack             |
+| `DescribeStackResources` | Get resource details within a stack   |
+| `DescribeStackEvents`    | Get stack event history               |
 
-### Step Functions (`states`)
+#### Step Functions (`states`)
 
 | Action                   | Description                              |
 | ------------------------ | ---------------------------------------- |
 | `ListStateMachines`    | List state machines                      |
 | `DescribeStateMachine` | Get state machine definition, role, type |
 | `ListExecutions`       | List executions of a state machine       |
-| `DescribeExecution`    | Get execution status, input, output      |
 | `ListActivities`       | List Step Functions activities           |
 | `ListTagsForResource`  | List tags on state machines              |
 
-### Systems Manager (`ssm`)
+#### Systems Manager (`ssm`)
 
 | Action                          | Description                                      |
 | ------------------------------- | ------------------------------------------------ |
 | `DescribeInstanceInformation` | List managed instances with OS, agent status     |
-| `DescribeParameters`          | List SSM parameters                              |
+| `DescribeParameters`          | List SSM parameters (names only, not values)     |
 | `ListDocuments`               | List SSM documents (runbooks, commands)          |
 | `GetInventory`                | Get software and config inventory from instances |
 | `DescribePatchBaselines`      | List patch baselines                             |
 | `ListAssociations`            | List State Manager associations                  |
+
+---
+
+## Statement 3 — S3 Bucket Object Read (scoped)
+
+#### S3 (`s3`) — object access (single bucket)
+
+| Action         | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `ListBucket` | List objects within the specified bucket       |
+| `GetObject`  | Read object contents from the specified bucket |
+
+**Resource:** `arn:aws:s3:::<BUCKET_NAME>` and `arn:aws:s3:::<BUCKET_NAME>/*`
+
+Replace `<BUCKET_NAME>` with the client's bucket name.
+
+---
+
+## Summary
+
+| Category                   | Services                                 | Actions       |
+| -------------------------- | ---------------------------------------- | ------------- |
+| Cost & Org                 | ce, cost-optimization-hub, organizations | 23            |
+| Resource Details & Metrics | 41 services                              | 232           |
+| S3 Object Read (scoped)    | s3                                       | 2             |
+| **Total**            | **44 services**                    | **257** |
