@@ -204,8 +204,6 @@
         "rds:ListTagsForResource",
 
         "s3:ListAllMyBuckets",
-        "s3:ListBucket",
-        "s3:GetObject",
         "s3:GetBucketLocation",
         "s3:GetEncryptionConfiguration",
         "s3:GetBucketVersioning",
@@ -318,6 +316,18 @@
         "mq:ListTags"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "S3BucketObjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>",
+        "arn:aws:s3:::<BUCKET_NAME>/*"
+      ]
     }
   ]
 }
