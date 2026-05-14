@@ -107,7 +107,6 @@
         "cloudformation:ListStackResources",
         "cloudformation:DescribeStackResources",
         "cloudformation:DescribeStackEvents",
-        "cloudformation:GetTemplate",
 
         "cloudfront:ListDistributions",
         "cloudfront:GetDistribution",
@@ -183,12 +182,9 @@
         "glue:GetTables",
         "glue:GetCrawlers",
         "glue:GetCrawler",
-        "glue:GetConnections",
-        "glue:GetDevEndpoints",
         "glue:GetTriggers",
 
         "lambda:ListFunctions",
-        "lambda:GetFunction",
         "lambda:GetFunctionConfiguration",
         "lambda:ListEventSourceMappings",
         "lambda:ListAliases",
@@ -219,8 +215,6 @@
 
         "sns:ListTopics",
         "sns:GetTopicAttributes",
-        "sns:ListSubscriptionsByTopic",
-        "sns:ListSubscriptions",
         "sns:ListTagsForResource",
 
         "sqs:ListQueues",
@@ -237,7 +231,6 @@
         "states:ListStateMachines",
         "states:DescribeStateMachine",
         "states:ListExecutions",
-        "states:DescribeExecution",
         "states:ListActivities",
         "states:ListTagsForResource",
 
