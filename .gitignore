@@ -1,1 +1,6 @@
-.terraform*
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+crash.log
+# Local tfvars which may contain secrets

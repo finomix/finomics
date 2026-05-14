@@ -151,3 +151,10 @@ resource "aws_s3_object" "focus_monthly_folder" {
   content      = ""
   content_type = "application/x-directory"
 }
+
+resource "aws_s3_object" "historical_data_folder" {
+  bucket       = aws_s3_bucket.finomics_bucket.id
+  key          = "focus-exports/historical-data/"
+  content      = ""
+  content_type = "application/x-directory"
+}

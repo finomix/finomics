@@ -139,7 +139,7 @@ resource "aws_iam_role_policy" "finomics_policy" {
         Sid    = "TrustedAdvisorAccess"
         Effect = "Allow"
         Action = [
-          "trustedadvisor:GetCheckResult",
+          "trustedadvisor:DescribeCheckSummaries",
           "trustedadvisor:DescribeCheckItems"
         ]
         Resource = [
@@ -235,8 +235,8 @@ resource "aws_iam_role_policy" "finomics_policy" {
           "deepracer:ListModels",
           "deepracer:GetModel",
           "deepracer:ListLeaderboards",
-          "deepracer:ListRaceTracks",
-          "deepracer:ListCars",
+          "deepracer:ListTracks",
+          "deepracer:GetCars",
           "deepracer:GetCar",
 
           "directconnect:DescribeConnections",
@@ -296,10 +296,8 @@ resource "aws_iam_role_policy" "finomics_policy" {
 
           "es:ListDomainNames",
           "es:DescribeElasticsearchDomains",
-          "opensearch:ListDomainNames",
-          "opensearch:DescribeDomains",
-          "opensearch:DescribeDomain",
-          "opensearch:ListTags",
+          "es:DescribeElasticsearchDomain",
+          "es:ListTags",
 
           "geo:ListPlaceIndexes",
           "geo:ListMaps",
@@ -369,22 +367,21 @@ resource "aws_iam_role_policy" "finomics_policy" {
           "route53domains:ListDomains",
           "route53domains:GetDomainDetail",
 
-          "s3:ListBuckets",
+          "s3:ListAllMyBuckets",
           "s3:ListBucket",
           "s3:GetObject",
           "s3:GetBucketLocation",
-          "s3:GetBucketEncryption",
           "s3:GetEncryptionConfiguration",
           "s3:GetBucketVersioning",
           "s3:GetBucketTagging",
           "s3:GetBucketLogging",
-          "s3:GetBucketLifecycle",
+          "s3:GetLifecycleConfiguration",
           "s3:GetBucketPublicAccessBlock",
           "s3:GetBucketAcl",
           "s3:GetBucketPolicy",
           "s3:GetBucketPolicyStatus",
           "s3:GetBucketNotification",
-          "s3:GetBucketReplication",
+          "s3:GetReplicationConfiguration",
 
           "secretsmanager:ListSecrets",
           "secretsmanager:DescribeSecret",
