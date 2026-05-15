@@ -33,9 +33,13 @@
         "compute-optimizer:GetEnrollmentStatusesForOrganization",
         "compute-optimizer:GetRecommendationSummaries",
         "compute-optimizer:GetRecommendationPreferences",
+        "compute-optimizer:GetEffectiveRecommendationPreferences",
+        "compute-optimizer:DescribeRecommendationExportJobs",
         "compute-optimizer:GetEC2InstanceRecommendations",
+        "compute-optimizer:GetEC2RecommendationProjectedMetrics",
         "compute-optimizer:GetAutoScalingGroupRecommendations",
         "compute-optimizer:GetECSServiceRecommendations",
+        "compute-optimizer:GetECSServiceRecommendationProjectedMetrics",
         "compute-optimizer:GetEBSVolumeRecommendations",
         "compute-optimizer:GetLambdaFunctionRecommendations",
         "compute-optimizer:GetRDSDatabaseRecommendations",
@@ -45,9 +49,13 @@
         "support:DescribeTrustedAdvisorChecks",
         "support:DescribeTrustedAdvisorCheckResult",
         "support:DescribeTrustedAdvisorCheckSummaries",
+        "support:DescribeTrustedAdvisorCheckRefreshStatuses",
 
         "autoscaling:DescribeAutoScalingGroups",
-        "autoscaling:DescribePolicies"
+        "autoscaling:DescribeAutoScalingInstances",
+        "autoscaling:DescribePolicies",
+
+        "lambda:ListProvisionedConcurrencyConfigs"
 
       ],
       "Resource": "*"

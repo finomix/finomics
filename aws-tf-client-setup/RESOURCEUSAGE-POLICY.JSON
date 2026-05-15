@@ -6,6 +6,8 @@
 			"Effect": "Allow",
 			"Action": [
 				"sts:GetCallerIdentity",
+				"autoscaling:DescribeAutoScalingInstances",
+				"lambda:ListProvisionedConcurrencyConfigs",
 				"tag:GetResources",
 				"tag:GetTagKeys",
 				"tag:GetTagValues",
