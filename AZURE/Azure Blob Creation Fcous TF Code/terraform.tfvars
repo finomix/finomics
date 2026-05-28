@@ -1,0 +1,5 @@
+resource_group_name  = "finomics-focus-rg"
+location             = "eastus"
+storage_account_name = "focusreport"
+container_name       = "focuscontainer"
+app_client_id        = "<Your_app_client_id>"
