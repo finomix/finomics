@@ -5,7 +5,7 @@ output "application_object_id" {
 
 output "client_id" {
   description = "Application (Client) ID"
-  value       = azuread_application.finomics_app.application_id
+  value       = azuread_application.finomics_app.client_id
 }
 
 output "client_secret" {
